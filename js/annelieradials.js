@@ -78,7 +78,7 @@ var blogsvg = d3.select("#toggleBlogs").append("svg")
 //this is the svg that contains the section toggle box
 var sectionview = d3.select("#toggleSections").append("svg")
 .attr("width", 250)
-.attr("height", 25);
+.attr("height", 35);
 //svg contains the laid out sections across the screen
 var sectionlayout = d3.select("#allSections").append("svg")
 .attr("width", togglewidth)
@@ -106,10 +106,10 @@ var sectionToggle = sectionview.append("text")
 
 //here we attach the text for the toggles
 var blogToggleOn = blogsvg.append("text")
-.attr("x", lmargin)
+.attr("x", 1)
 .attr("y", textmargin*2)
 .attr('fill','grey')
-.attr('class','toggle')
+.attr('class','blogToggle')
 // .text("blogs:");
     .text(function(){ return 'blogs: ' + (displayBlogs ? 'on' : 'off') })
 

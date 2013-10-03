@@ -10,8 +10,11 @@
 <script type="text/javascript" src="js/lib/jquery.hoverIntent.js"></script>
 <script type="text/javascript" src="js/lib/jquery.reveal.js"></script>
 <script type="text/javascript" src="js/lib/moment.min.js"></script>
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    </head>
+<script type="text/javascript" src="js/lib/d3.min.js"></script>
+
+<!-- <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+ -->    
+</head>
 <body>
 
 <center>
@@ -78,7 +81,7 @@ The Radials Project allows the NYT to consider its publishing patterns from a br
 $(function(){
     $('#textwriter').teletype({
         animDelay: 100,
-        text: '...Hundreds of articles are published every day at the New York Times. This interactive visualization shows 5 weeks of metadata associated with each article per day - when were they published, in which section, how many words is it, and is the article a blog. Whereas this metadata such as an article length or number of articles per section would be obvious in the print paper - the weight of a section as compared to another, or the amount of space an article took up on any given page - it is not as clear online. The Radials Project allows the NYT to consider its publishing patterns from a broad perspective, and surfaces data that would otherwise be left in dusty databases.'
+        text: '...Hundreds of articles are published every day at the New York Times. This interactive visualization shows 5 weeks of metadata associated with the NYT digital publishing. Each line is an article, each radial is a day of publishing. Time of publication is visualized around the 24 hour clock, section and blog/non-blog designation is shown through color and each article wordcount is represented by its line length. Whereas this metadata would be more intuitive in the print paper - the weight of a section as compared to another, or the amount of space an article takes up on any given page - it is not as clear online. The Radials Project considers the NYT publishing patterns from a broad perspective and surfaces data that otherwise might be left to collect dust in a database.'
     });
             
         $("#small_multiples").slideDown("6000",function(){
@@ -100,6 +103,12 @@ setTimeout(function(){
         $("#toggleSections").slideDown("4000",function(){
         })
 }, 69000);
+
+$('#textDelay').click(function(){
+  $("#textwriter").slideToggle( "slow", function() {
+});
+});
+
       // $('#button').click(function(e) { // Button which will activate our modal
       //     $('#modal').reveal({ // The item which will be opened with reveal
       //       animation: 'fadeAndPop',                   // fade, fadeAndPop, none

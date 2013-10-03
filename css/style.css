@@ -305,12 +305,7 @@ key {
 
 #toggleBlogs{
     z-index: 1001;
-  /*color: #FCFCFC;*/
-  /*padding: 10px;*/
-  /*position:absolute;*/
-/*background: rgba(0,0,0,.2);*/
-    /*cursor: pointer;*/
-    /*margin-bottom: 10px;*/
+  /*z-index: 1001;*/
     padding-top: 5px;    
     /*padding-bottom: 10px;*/
 
@@ -325,24 +320,21 @@ key {
 
 #toggleSections{
     z-index: 1001;
-  /*color: #FCFCFC;*/
-  /*padding: 10px;*/
-  /*position:absolute;*/
-/*background: rgba(0,0,0,.2);*/
 
-    /*cursor: pointer;*/
-    /*padding-bottom: 5px;*/
     display:none;
     padding-top: 10px;
     /*position: absolute;*/
 }
 #toggleSections:hover{
-      padding-top: 5px;
+      /*padding-top: 5px;*/
     cursor: pointer;
         opacity: 0.5;
       /*background-color: #C0C0C0;*/
 }
-
+.blogToggle{ 
+  color: #FCFCFC;
+  background: rgba(0,0,0,.3);
+}
 #allSections{
   margin: auto;
   display:none;
@@ -373,7 +365,7 @@ day2 {
   width: 100%;
   position: relative;
   padding-top:5px;
-  padding-right: 120px;
+  padding-right: 110px;
   /*padding-left: 10px;*/
   /*padding-bottom:20px;*/
   /*opacity: 0.8;*/
@@ -390,14 +382,20 @@ day7{
   /*position:absolute;*/
   float:right;
 background: rgba(0,0,0,.6);
-  font-family:Times; 
+  font-family:Georgia; 
   font-size: 14px;
-    width: 2%;
+    width: 4%;
 /*color: #00A;*/
 }
+#textDelay:hover{
+      padding-top: 5px;
+    cursor: pointer;
+        opacity: 0.5;
+      /*background-color: #C0C0C0;*/
+}
 #textwriter{
-  font-family:Times; 
-  font-size: 14px;
+  font-family: Georgia; 
+  font-size: 1.1em;
   width: 26%;
   left: 37% !important;
   z-index: 1001;
