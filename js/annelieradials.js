@@ -1,4 +1,13 @@
-d3.json("./data/fulldata.json", function(data) {
+//will document ready improve load time issue
+// "2012-09-23"
+// "2012-10-27
+// {"headline": "Jil Sander: Minimalism With a Kick", "timestamp": "2012-09-23 09:09:27", "section": "Style", "word_count": "392", "blog_post": 1},
+
+$(document).ready(function() {
+
+d3.json("./data/fulldata.json", function(error, data) {
+  if (error) return console.log("there was an error loading the data: " + error);
+  console.log("there are " + data.length + " elements in my dataset");
 
 var narrow = 1.5; //normal rect width
 var thick = 4; //thickness for highlighting, mouseovers
@@ -63,39 +72,46 @@ var heightScale = d3.scale.linear()
   .range([maxtotal/20, maxtotal/6]);
 
 //this is the svg that contains the blog toggle box 
-var blogsvg = d3.select("#medium").append("svg")
-.attr("width", togglewidth)
-.attr("height", toggleheight);
+var blogsvg = d3.select("#toggleBlogs").append("svg")
+.attr("width", 100)
+.attr("height", 20);
 //this is the svg that contains the section toggle box
-var sectionview = d3.select("#large").append("svg")
-.attr("width", togglewidth)
-.attr("height", toggleheight);
+var sectionview = d3.select("#toggleSections").append("svg")
+.attr("width", 250)
+.attr("height", 25);
 //svg contains the laid out sections across the screen
-var sectionlayout = d3.select("#clickme").append("svg")
+var sectionlayout = d3.select("#allSections").append("svg")
 .attr("width", togglewidth)
 .attr("height", toggleheight)
-.attr('class','sectionnames');
+// .attr('class','sectionnames');
 //svg contains each radial and totals circle
 //width and height are related to the max total articles 
 var chart = d3.select("#small_multiples").selectAll("svg").append("svg")
+// var chart = d3.select("#small_multiples").append("svg")
 .data(data.days)
 .enter().append("svg")
 .attr("width", maxtotal/2)
 .attr("height", maxtotal/2);
+
+  var displayBlogs = true; 
+  var displayAllSections = true;
 //here we attach the text for the toggles
 var sectionToggle = sectionview.append("text")
 .attr("x", lmargin)
 .attr("y", toggleheight-textmargin)
 .attr('fill','grey')
 .attr('class','toggle')
-.text("SORT BY SECTION");
+    .text(function(){ return 'sections: ' + (displayAllSections ? 'all' : 'highlight') })
+
+
 //here we attach the text for the toggles
 var blogToggleOn = blogsvg.append("text")
 .attr("x", lmargin)
 .attr("y", textmargin*2)
 .attr('fill','grey')
 .attr('class','toggle')
-.text("SHOW / HIDE BLOG POSTS");
+// .text("blogs:");
+    .text(function(){ return 'blogs: ' + (displayBlogs ? 'on' : 'off') })
 
 //let's draw all the thin rectangles for the radials
 rect()
@@ -158,14 +174,15 @@ function rect(){
   .on('mouseover', function(d,i){
     d3.select(this)
     //change the width of the mousedover rectangle to thick
-    .attr("width",thick)
+    .attr("width",thick*2)
     })
   .on('mouseout', function(d,i){
     d3.select(this)
     .attr("width", narrow)
     });
 //call circle function / total circles after you are finished drawing all rectangle lines
-circ()
+circ();
+// text();
 }
 //special jquery library for a nice mouseover headline / title per rectangle
  $('rect').tipsy({ 
@@ -183,28 +200,54 @@ var a=0;
 blogToggleOn.on('click', function(d,i) {
   console.log("toggleOn")
     if (a===0){
+      displayBlogs = false;
+      console.log(displayBlogs);
       //highlight blogs
       lookBlogs()
+
+      d3.select(this)
+        .text(function(){ return 'blogs: ' + (displayBlogs ? 'on' : 'only') })
+        // .style('background', function(){ return (displayBlogs ? blogColor : 'inherit') })
+        .style('color', function(){ return (displayBlogs ? 'white' : 'black') })
+ 
     }
     else if (a===1){
+      displayBlogs = true;
+      console.log(displayBlogs);
       //go back to normal view
       goback();
+      d3.select(this)
+        .text(function(){ return 'blogs: ' + (displayBlogs ? 'on' : 'only') })
+        // .style('background', function(){ return (displayBlogs ? blogColor : 'inherit') })
+        .style('color', function(){ return (displayBlogs ? 'white' : 'black') })
     } 
 })
 sectionToggle.on('click', function(d,i) {
   console.log("sectiontoggleOn")
   if (b===0){
     //call the section names up
+    displayAllSections = false;
+          d3.select(this)
+        .text(function(){ return 'sections: ' + (displayAllSections ? 'all' : 'highlight') })
+        // .style('background', function(){ return (displayBlogs ? blogColor : 'inherit') })
+        .style('color', function(){ return (displayAllSections ? 'white' : 'black') })
+ 
     sectNames();
     //show them slowly
-        $("#clickme").show("slow",function(){
+        $("#allSections").show("slow",function(){
         })
     }
   else if (b===1){
+    displayAllSections = true;
+          d3.select(this)
+        .text(function(){ return 'sections: ' + (displayAllSections ? 'all' : 'highlight') })
+        // .style('background', function(){ return (displayBlogs ? blogColor : 'inherit') })
+        .style('color', function(){ return (displayAllSections ? 'white' : 'black') })
+ 
     //if you click the section toggle button go back to the original visual
     goback();
     //and hide the section spread
-      $("#clickme").hide("slow",function(){
+      $("#allSections").hide("slow",function(){
       })
     }
 })
@@ -215,7 +258,7 @@ function goback(){
     .transition()
   .attr("width", narrow)
   .attr("height", function(d,i){ 
-    var word = (d3.values(d.word_count).join(""))
+    var word = (d3.values(d.word_count).join("")) //is something wrong here?
     var wordis = parseInt(word)
     return heightScale(wordis);
   })
@@ -244,7 +287,7 @@ function lookBlogs(){
     return heightScale(wordis);
   }
   else {
-    return 0;
+    return 0.1;
   }
     })
     .ease("elastic", 10, .3)
@@ -270,6 +313,61 @@ function circ(){
     return (maxtotal/4+Math.floor(dateDiff(d.date, mindate)/7));
   })    
   .attr("r", function(d,i){ return (d.total/18) });
+
+  // var text = chart.append("text")
+  // .attr("fill", "grey")
+  // .attr("class", "h4")
+  // .text(function(d){
+  //   var timestamp = (d3.values(d.timestamp).join(""));
+  //   return dateAdjust(d.date);  
+  // })
+  // .attr("x", function(d,i){ 
+  //   return (maxtotal/4+(Math.floor(dateDiff(d.date, mindate)%7))); 
+  // })//not maxtotal/2
+  // .attr("y", function(d,i){ 
+  //   return (maxtotal/2+Math.floor(dateDiff(d.date, mindate)/7));
+  // })    
+}
+
+text();
+function text(){
+  var text = chart.append("text")
+  // .attr("stroke", "grey")
+  .attr("fill", "grey")
+  .attr("class", "h4")
+  .attr("font-size", "10")
+  .text(function(d){
+    var cleanDate = dateAdjust(d.date); 
+    var d3Date = d3.time.day(new Date(cleanDate)); 
+    var formatDate = d3.time.format("%b-%d-%Y");
+    return formatDate(d3Date);
+  })
+  .attr("x", function(d,i){ 
+    return (maxtotal/4+(Math.floor(dateDiff(d.date, mindate)%7))); 
+  })//not maxtotal/2
+  .attr("y", function(d,i){ 
+    return (maxtotal/2.5+Math.floor(dateDiff(d.date, mindate)/7));
+  });
+  // console.log(d[0].date);
+    // textToLeave(); 
+};
+
+function textToLeave(){
+  var text = chart.append("text")
+  // .attr("stroke", "grey")
+  .attr("fill", "grey")
+  .attr("class", "h4")
+  .text(function(d){
+    // console.log(data[0].date);  
+    // console.log(d[0].date);  
+    console.log(d.date[0]);  
+  })
+  // .attr("x", function(d,i){ 
+  //   return (maxtotal/4+(Math.floor(dateDiff(data[0].date, mindate)%7))); 
+  // })//not maxtotal/2
+  // .attr("y", function(d,i){ 
+  //   return (maxtotal/2.5+Math.floor(dateDiff(data[0].date, mindate)/7));
+  // });
 }
 
 function highlight(sectionis){
@@ -300,13 +398,23 @@ function sectNames(){
   var sectNames = sectionlayout.selectAll("text").append("text") //select the sectionlayout SVG
   .data(sections) //we just go into the array called sections
   .enter().append("text")
-  .attr("class", function(d,i){
-    return d;
-  })
+   .style("font-size", "8pt")
+  // .attr("class", function(d,i){
+  //   return d;
+  // })
+  // .attr("class", sectNames)
  .attr("x", function(d,i){
-  return lmargin+Math.floor(1500/22)*i;
+  // return lmargin;
+  // return lmargin+i*2;
+  // var itsx = [lmargin+i*20]
+  if (i>0){
+  return lmargin+((i-1)*80)
+}
+else {
+  return lmargin+i*60;
+}
   })
- .attr("y", 20)
+ .attr("y", 15)
  .attr("fill", function(d,i){
     return colors[i];
     })
@@ -315,14 +423,15 @@ function sectNames(){
 })
   .on('mouseover', function(d,i){
     d3.select(this)
-    .style("font-size", "10pt")
+    .style("opacity", "1")
     highlight(d);
 })
   .on('mouseout', function(d,i){
     d3.select(this)
-      .style("font-size", "7.5pt")
+      .style("opacity", ".8")
    });
   b=1;
  }
 //that's all for now!
+})
 })

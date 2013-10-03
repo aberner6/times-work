@@ -1,42 +1,133 @@
-<html>
+<!DOCTYPE html>
+<meta charset="utf-8">
     <head>
-     <title>Colors, Grey Blog</title>
-<script src="https://dl.dropboxusercontent.com/u/97059/fitbit/d3.v3.min.js"></script>
-        <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
-
-        <style>
-        .toggle{
-          font-family:Helvetica Neue;
-          font-size:10pt;
-        }
-        .sectionnames{
-          font-size:7.5pt;
-          text-align:justify;
-          text-justify:inter-word;
-        }
-        </style>
+     <title>Radials Project</title>
+    
+<link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
+<link href="css/style.css" rel="stylesheet" type="text/css" /> 
+<script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script> 
+<script type="text/javascript" src="js/lib/jquery.tipsy.js"></script>
+<script type="text/javascript" src="js/lib/jquery.hoverIntent.js"></script>
+<script type="text/javascript" src="js/lib/jquery.reveal.js"></script>
+<script type="text/javascript" src="js/lib/moment.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     </head>
 <body>
-<!-- 
-  <div id="container">
-        <div class="header">Sunday</div>
-        <div class="header">Monday</div>
-        <div class="header">Tuesday</div>
-        <div class="header">Wednesday</div>
-        <div class="header">Thursday</div>
-        <div class="header">Friday</div>
-        <div class="header">Saturday</div>
+
+<center>
+  <div id="dailyDays">
+        <day2>Sunday</day2>
+        <day2>Monday</day2>
+        <day2>Tuesday</day2>
+        <day2>Wednesday</day2>
+        <day2>Thursday</day2>
+        <day2>Friday</day2>
+        <day7>Saturday</day7>
+</div>
+</center>
+
+<!-- <div id="modal" style="font-family:Brain Flower; font-size: 48px; width: 500px; float:left;"></div> -->
+<!-- <h3>
+<div id="modal">
+Hundreds of articles are published every day at the New York Times. This interactive visualization shows 5 weeks of metadata associated with these articles - when was it published, in which section, how many words is it, and is the article a blog. 
+<br> 
+Whereas this metadata such as an article length or number of articles per section would be obvious in the print paper - the weight of a section as compared to another, or the amount of space an article took up on any given page - it is not as clear online.
+<br> 
+The Radials Project allows the NYT to consider its publishing patterns from a broad perspective, and surfaces data that would otherwise be left in dusty databases.
+<br>
+</div>
+</h3>
+ -->
+
+
+
+ <center>
+<div id="textDelay"></div>
+</center>
+
+
+<!-- <div id="timeticker" style="font-family:Brain Flower; font-size: 18px; width: 200px; position:relative; float:right;">
 </div> -->
 
 
-    <div id="medium"></div>
-    <div id="large"></div>
-    <div id="clickme"></div>
+  <script>
+    // $(document).ready(function() {
+// $(function() {
+
+    $.fn.teletype = function(opts){
+    var $this = this,
+        defaults = {
+            animDelay: 0
+        },
+        settings = $.extend(defaults, opts);
+    
+    $.each(settings.text, function(i, letter){
+        setTimeout(function(){
+            $this.html($this.html() + (letter != '\n' ? letter : '<br />'));
+        }, settings.animDelay * i);
+    });
+};
+
+// $(function(){
+//     $('#textDelay').teletype({
+//         animDelay: 10,
+//         text: '...'
+// });
+//   });
+
+$(function(){
+    $('#textwriter').teletype({
+        animDelay: 100,
+        text: '...Hundreds of articles are published every day at the New York Times. This interactive visualization shows 5 weeks of metadata associated with each article per day - when were they published, in which section, how many words is it, and is the article a blog. Whereas this metadata such as an article length or number of articles per section would be obvious in the print paper - the weight of a section as compared to another, or the amount of space an article took up on any given page - it is not as clear online. The Radials Project allows the NYT to consider its publishing patterns from a broad perspective, and surfaces data that would otherwise be left in dusty databases.'
+    });
+            
+        $("#small_multiples").slideDown("6000",function(){
+        })
+  });
+
+    // hideIt();
+setTimeout(function(){
+    $("#textwriter").slideUp("1000",function(){
+        })
+        $('#textDelay').teletype({
+        animDelay: 10,
+        text: '...'
+})
+        $("#dailyDays").slideDown("2000",function(){
+        })
+        $("#toggleBlogs").slideDown("3000",function(){
+        })
+        $("#toggleSections").slideDown("4000",function(){
+        })
+}, 69000);
+      // $('#button').click(function(e) { // Button which will activate our modal
+      //     $('#modal').reveal({ // The item which will be opened with reveal
+      //       animation: 'fadeAndPop',                   // fade, fadeAndPop, none
+      //     animationspeed: 800,                       // how fast animtions are
+      //     closeonbackgroundclick: true,              // if you click background will modal close?
+      //     dismissmodalclass: 'close'    // the class of a button or element that will close an open modal
+      //   });
+      // return false;
+      // });
+    // });
+  </script>
+
+<!-- <center> -->
+<div id="textwriter"></div>
+<!-- </center> -->
+
+      <div id="toggleBlogs"></div>
+    <div id="toggleSections"></div>
+
+    <center>
+    <div id="allSections"></div>
+  </center>
+
+   <center>
     <div id="small_multiples"></div>
-    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script> 
-<script type="text/javascript" src="js/jquery.tipsy.js"></script>
-<!-- <script type="text/javascript" src="js/jquery.hoverIntent.js"></script>
-<script src="js/jquery.reveal.js"></script> -->
-    <script type="text/javascript" src="annelieradials.js"></script>
+</center>
+<script type="text/javascript" src="js/annelieradials.js"></script>
+
+
 </body>
 </html>  
